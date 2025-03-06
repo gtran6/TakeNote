@@ -152,3 +152,22 @@ private fun TaskItemPreview() {
         }
     }
 }
+
+@Preview
+@Composable
+private fun TaskItemCompletedPreview() {
+    MaterialTheme {
+        Surface {
+            TaskItem(
+                task = Task(
+                    title = "Title",
+                    description = "Description",
+                    isCompleted = true,
+                    id = "ID"
+                ),
+                onTaskClick = {},
+                onCheckedChange = {}
+            )
+        }
+    }
+}
