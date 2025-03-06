@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../AndroidTraining" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CollapsingToollbar" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../DataBinding" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Demo3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../DogApi" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../FoodOrderApp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../FoodOrdering" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../GourmetEgypt" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../NewsAPI" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../NewsAPIApp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Project12" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Project23" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Project3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Project3withUI" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../QuoteApi" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../RoomDB" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../ShoppingList" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../ToDoApi" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../WallpaperAppDemo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Week3Day2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Week4Day2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../inventory-app" vcs="Git" />
+  </component>
+</project>
