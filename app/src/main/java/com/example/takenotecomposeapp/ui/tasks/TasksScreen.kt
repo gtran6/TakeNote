@@ -44,7 +44,9 @@ fun TasksScreen(
     modifier: Modifier = Modifier,
     onAddTask: () -> Unit,
     viewModel: TasksViewModel = hiltViewModel(),
-    onTaskClick: (Task) -> Unit
+    onTaskClick: (Task) -> Unit,
+    @StringRes userMessage: Int,
+    onUserMessageDisplayed: () -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
