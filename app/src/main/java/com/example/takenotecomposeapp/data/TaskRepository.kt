@@ -11,4 +11,8 @@ interface TaskRepository {
     suspend fun createTask(title: String, description: String): String
 
     suspend fun activateTask(taskId: String)
+
+    fun getTasksStream(taskId: String): Flow<Task?>
+
+    suspend fun deleteTask(taskId: String)
 }

@@ -43,6 +43,10 @@ class TaskRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getTasksStream(taskId: String): Flow<Task?> {
+        return localDataSource.observeById(taskId).map { it.toExternal() }
+    }
+
     override suspend fun completeTask(taskId: String) {
         localDataSource.updateCompleted(taskId = taskId, completed = true)
         saveTasksToNetwork()
@@ -89,6 +93,11 @@ class TaskRepositoryImpl @Inject constructor(
 
     override suspend fun activateTask(taskId: String) {
         localDataSource.updateCompleted(taskId = taskId, completed = false)
+        saveTasksToNetwork()
+    }
+
+    override suspend fun deleteTask(taskId: String) {
+        localDataSource.deleteById(taskId)
         saveTasksToNetwork()
     }
 }

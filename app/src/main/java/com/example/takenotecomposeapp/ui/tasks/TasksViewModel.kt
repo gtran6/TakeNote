@@ -143,4 +143,4 @@ class TasksViewModel @Inject constructor(
 
 // Used to save the current filtering in SavedStateHandle.
 const val TASKS_FILTER_SAVED_STATE_KEY = "TASKS_FILTER_SAVED_STATE_KEY"
-private const val StopTimeoutMillis: Long = 5000
+const val StopTimeoutMillis: Long = 5000
