@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -123,6 +124,20 @@ class TasksViewModel @Inject constructor(
             }
         }
         return tasksToShow
+    }
+
+    fun completeTask(task: Task, completed: Boolean) = viewModelScope.launch {
+        if (completed) {
+            taskRepository.completeTask(task.id)
+            showSnackbarMessage(R.string.task_marked_complete)
+        } else {
+            taskRepository.activateTask(task.id)
+            showSnackbarMessage(R.string.task_marked_active)
+        }
+    }
+
+    private fun showSnackbarMessage(message: Int) {
+        _userMessage.value = message
     }
 }
 

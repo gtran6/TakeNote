@@ -8,4 +8,7 @@
     <string name="no_tasks_completed">You have no completed tasks!</string>
     <string name="loading_tasks_error">Error while loading tasks</string>
     <string name="no_tasks_image_content_description">No tasks image</string>
+    <string name="add_task">New Task</string>
+    <string name="task_marked_complete">Task marked complete</string>
+    <string name="task_marked_active">Task marked active</string>
 </resources>

@@ -19,4 +19,16 @@ class TaskRepositoryImpl @Inject constructor(
     override fun getTasksStream(): Flow<List<Task>> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun completeTask(taskId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun createTask(taskId: String, description: String): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun activateTask(taskId: String) {
+        TODO("Not yet implemented")
+    }
 }
