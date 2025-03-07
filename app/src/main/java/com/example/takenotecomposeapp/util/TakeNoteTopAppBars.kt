@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -110,5 +112,40 @@ private fun FilterTasksMenu(
             onClick = { onFilterCompletedTasks; closeMenu() },
             text = { Text(text = stringResource(id = R.string.nav_completed)) }
         )
+    }
+}
+
+// will add to TaskDetailScreen
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TaskDetailTopAppBar(
+    onBackPressed: () -> Unit,
+    onDelete: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            Text(text = stringResource(id = R.string.task_details))
+        },
+        navigationIcon = {
+            IconButton(onClick = onBackPressed) {
+                Icon(Icons.Filled.ArrowBackIosNew, stringResource(id = R.string.menu_back))
+            }
+        },
+        actions = {
+            IconButton(onClick = onDelete) {
+                Icon(Icons.Filled.Delete, stringResource(id = R.string.menu_delete_task))
+            }
+        },
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Preview
+@Composable
+private fun TaskDetailTopAppBarPreview() {
+    MainTheme {
+        Surface {
+            TaskDetailTopAppBar( {}, {} )
+        }
     }
 }
