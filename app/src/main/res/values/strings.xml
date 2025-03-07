@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TakeNoteApp</string>
+    <string name="app_name">Take Note</string>
     <string name="all_tasks">All tasks</string>
     <string name="no_tasks">You have no tasks</string>
     <string name="label_active">Active Tasks</string>
@@ -11,4 +11,9 @@
     <string name="add_task">New Task</string>
     <string name="task_marked_complete">Task marked complete</string>
     <string name="task_marked_active">Task marked active</string>
+    <string name="open_drawer">Open Drawer</string>
+    <string name="menu_filter">Filter</string>
+    <string name="nav_all">All</string>
+    <string name="nav_active">Active</string>
+    <string name="nav_completed">Completed</string>
 </resources>
