@@ -70,10 +70,14 @@ private fun TasksEmptyContentPreview() {
 private fun TasksContent(
     tasks: List<Task>,
     @StringRes currentFilteringLabel: Int,
+    onTaskClick: (Task) -> Unit,
+    onTaskCheckedChange: (Task, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
-
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.vertical_margin))
     ) {
         Text(
             text = stringResource(currentFilteringLabel),
@@ -85,7 +89,11 @@ private fun TasksContent(
         )
         LazyColumn {
             items(tasks) { task ->
-
+                TaskItem(
+                    task = task,
+                    onTaskClick = onTaskClick,
+                    onCheckedChange = { onTaskCheckedChange(task, it) }
+                )
             }
         }
     }
@@ -96,7 +104,37 @@ private fun TasksContent(
 private fun TasksContentPreview() {
     MaterialTheme {
         Surface {
-
+            TasksContent(
+                tasks = listOf(
+                    Task(
+                        title = "Title 1",
+                        description = "Description 1",
+                        isCompleted = false,
+                        id = "ID 1"
+                    ),
+                    Task(
+                        title = "Title 2",
+                        description = "Description 2",
+                        isCompleted = true,
+                        id = "ID 2"
+                    ),
+                    Task(
+                        title = "Title 3",
+                        description = "Description 3",
+                        isCompleted = true,
+                        id = "ID 3"
+                    ),
+                    Task(
+                        title = "Title 4",
+                        description = "Description 4",
+                        isCompleted = false,
+                        id = "ID 4"
+                    )
+                ),
+                currentFilteringLabel = R.string.all_tasks,
+                onTaskClick = {},
+                onTaskCheckedChange = { _, _ -> }
+            )
         }
     }
 }

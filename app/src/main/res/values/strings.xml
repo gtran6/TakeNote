@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TakeNoteComposeApp</string>
+    <string name="app_name">TakeNoteApp</string>
     <string name="all_tasks">All tasks</string>
     <string name="no_tasks">You have no tasks</string>
     <string name="label_active">Active Tasks</string>
