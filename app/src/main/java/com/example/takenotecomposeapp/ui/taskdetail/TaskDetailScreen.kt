@@ -16,6 +16,7 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -25,19 +26,26 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.takenotecomposeapp.R
 import com.example.takenotecomposeapp.data.Task
+import com.example.takenotecomposeapp.util.TaskDetailTopAppBar
 
 @Composable
 fun TaskDetailScreen(
     modifier: Modifier = Modifier,
-    viewModel: TaskDetailViewModel = hiltViewModel()
+    viewModel: TaskDetailViewModel = hiltViewModel(),
+    onEditTask: (String) -> Unit,
+    onBackPressed: () -> Unit,
+    onDeleteTask: () -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxWidth(),
         floatingActionButton = {
-            SmallFloatingActionButton(onClick = {}) {
+            SmallFloatingActionButton(onClick = { onEditTask(viewModel.taskId) }) {
                 Icon(Icons.Filled.Edit, stringResource(id = R.string.edit_task))
             }
-        }
+        },
+        topBar = { TaskDetailTopAppBar(
+            onBackPressed = onBackPressed,
+            onDelete = viewModel::deleteTask) }
     ) { paddingValues ->
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -46,6 +54,13 @@ fun TaskDetailScreen(
             onTaskCheck = viewModel::completeTask,
             modifier = Modifier.padding(paddingValues)
         )
+
+        // Check if the task is deleted and call onDeleteTask
+        LaunchedEffect(uiState.isTaskDeleted) {
+            if (uiState.isTaskDeleted) {
+                onDeleteTask()
+            }
+        }
     }
 }
 

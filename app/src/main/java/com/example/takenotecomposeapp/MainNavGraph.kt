@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.takenotecomposeapp.TakeNoteDestinationsArgs.USER_MESSAGE_ARG
+import com.example.takenotecomposeapp.ui.taskdetail.TaskDetailScreen
 import com.example.takenotecomposeapp.ui.tasks.TasksScreen
 
 @Composable
@@ -45,6 +46,16 @@ fun MainNavGraph(
                 onTaskClick = { task -> navActions.navigateToTaskDetail(task.id) },
                 userMessage = entry.arguments?.getInt(USER_MESSAGE_ARG)!!,
                 onUserMessageDisplayed = { entry.arguments?.putInt(USER_MESSAGE_ARG, 0) },
+            )
+        }
+
+        composable(TakeNoteDestinations.TASK_DETAIL_ROUTE) {
+            TaskDetailScreen(
+                onEditTask = { taskId ->
+                    navActions.navigateToAddEditTask(R.string.edit_task, taskId)
+                },
+                onBackPressed = { navController.popBackStack() },
+                onDeleteTask = { navActions.navigateToTasks(DELETE_RESULT_OK) }
             )
         }
     }
