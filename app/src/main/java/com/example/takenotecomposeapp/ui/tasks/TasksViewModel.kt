@@ -3,6 +3,9 @@ package com.example.takenotecomposeapp.ui.tasks
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.takenotecomposeapp.ADD_EDIT_RESULT_OK
+import com.example.takenotecomposeapp.DELETE_RESULT_OK
+import com.example.takenotecomposeapp.EDIT_RESULT_OK
 import com.example.takenotecomposeapp.R
 import com.example.takenotecomposeapp.data.Task
 import com.example.takenotecomposeapp.data.TaskRepository
@@ -138,6 +141,18 @@ class TasksViewModel @Inject constructor(
 
     private fun showSnackbarMessage(message: Int) {
         _userMessage.value = message
+    }
+
+    fun showEditResultMessage(result: Int) {
+        when (result) {
+            EDIT_RESULT_OK -> showSnackbarMessage(R.string.successfully_saved_task_message)
+            ADD_EDIT_RESULT_OK -> showSnackbarMessage(R.string.successfully_added_task_message)
+            DELETE_RESULT_OK -> showSnackbarMessage(R.string.successfully_deleted_task_message)
+        }
+    }
+
+    fun snackbarMessageShown() {
+        _userMessage.value = null
     }
 }
 

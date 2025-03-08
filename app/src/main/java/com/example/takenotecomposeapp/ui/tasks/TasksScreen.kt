@@ -20,10 +20,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -41,12 +45,13 @@ import com.example.takenotecomposeapp.data.Task
 
 @Composable
 fun TasksScreen(
+    @StringRes userMessage: Int,
     modifier: Modifier = Modifier,
     onAddTask: () -> Unit,
     viewModel: TasksViewModel = hiltViewModel(),
     onTaskClick: (Task) -> Unit,
-    @StringRes userMessage: Int,
-    onUserMessageDisplayed: () -> Unit
+    onUserMessageDisplayed: () -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -65,6 +70,24 @@ fun TasksScreen(
             onTaskCheckedChange = viewModel::completeTask,
             modifier = Modifier.padding(paddingValues)
         )
+
+        // Check for user messages to display on the screen
+        uiState.userMessage?.let { message ->
+            val snackBarText = stringResource(message)
+            LaunchedEffect(snackbarHostState, viewModel, message, snackBarText) {
+                snackbarHostState.showSnackbar(snackBarText)
+                viewModel.snackbarMessageShown()
+            }
+        }
+
+        // Check if there's a userMessage to show to the user
+        val currentOnUserMessageDisplayed by rememberUpdatedState(onUserMessageDisplayed)
+        LaunchedEffect(userMessage) {
+            if (userMessage != 0) {
+                viewModel.showEditResultMessage(userMessage)
+                currentOnUserMessageDisplayed()
+            }
+        }
     }
 }
 

@@ -21,4 +21,9 @@
     <string name="menu_delete_task">Delete task</string>
     <string name="edit_task">Edit Task</string>
     <string name="task_not_found">Task not found</string>
+    <string name="successfully_saved_task_message">Task saved</string>
+    <string name="successfully_added_task_message">Task added</string>
+    <string name="successfully_deleted_task_message">Task was deleted</string>
+    <string name="title_hint">Title</string>
+    <string name="description_hint">Enter your task here.</string>
 </resources>
