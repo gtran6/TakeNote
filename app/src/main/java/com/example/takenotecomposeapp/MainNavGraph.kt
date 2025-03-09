@@ -12,7 +12,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.takenotecomposeapp.TakeNoteDestinationsArgs.TASK_ID_ARG
+import com.example.takenotecomposeapp.TakeNoteDestinationsArgs.TITLE_ARG
 import com.example.takenotecomposeapp.TakeNoteDestinationsArgs.USER_MESSAGE_ARG
+import com.example.takenotecomposeapp.ui.addedittask.AddEditTaskScreen
 import com.example.takenotecomposeapp.ui.taskdetail.TaskDetailScreen
 import com.example.takenotecomposeapp.ui.tasks.TasksScreen
 
@@ -56,6 +59,19 @@ fun MainNavGraph(
                 },
                 onBackPressed = { navController.popBackStack() },
                 onDeleteTask = { navActions.navigateToTasks(DELETE_RESULT_OK) }
+            )
+        }
+        composable(
+            TakeNoteDestinations.ADD_EDIT_TASK_ROUTE,
+            arguments = listOf(
+                navArgument(TITLE_ARG) { type = NavType.IntType },
+                navArgument(TASK_ID_ARG) { type = NavType.StringType; nullable = true },
+            )
+        ) { entry ->
+            val taskId = entry.arguments?.getString(TASK_ID_ARG)
+            AddEditTaskScreen(
+                onBackPressed = { navController.popBackStack() },
+                topBarTitle = entry.arguments?.getInt(TITLE_ARG)!!
             )
         }
     }

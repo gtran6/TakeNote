@@ -1,11 +1,13 @@
 package com.example.takenotecomposeapp.util
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
@@ -148,4 +150,18 @@ private fun TaskDetailTopAppBarPreview() {
             TaskDetailTopAppBar( {}, {} )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddEditTaskTopAppBar(@StringRes title: Int, onBackPressed: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = stringResource(title)) },
+        navigationIcon = {
+            IconButton(onClick = onBackPressed) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
+            }
+        },
+        modifier = Modifier.fillMaxWidth()
+    )
 }
