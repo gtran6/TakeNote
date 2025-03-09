@@ -52,15 +52,6 @@ fun MainNavGraph(
             )
         }
 
-        composable(TakeNoteDestinations.TASK_DETAIL_ROUTE) {
-            TaskDetailScreen(
-                onEditTask = { taskId ->
-                    navActions.navigateToAddEditTask(R.string.edit_task, taskId)
-                },
-                onBackPressed = { navController.popBackStack() },
-                onDeleteTask = { navActions.navigateToTasks(DELETE_RESULT_OK) }
-            )
-        }
         composable(
             TakeNoteDestinations.ADD_EDIT_TASK_ROUTE,
             arguments = listOf(
@@ -72,6 +63,16 @@ fun MainNavGraph(
             AddEditTaskScreen(
                 onBackPressed = { navController.popBackStack() },
                 topBarTitle = entry.arguments?.getInt(TITLE_ARG)!!
+            )
+        }
+
+        composable(TakeNoteDestinations.TASK_DETAIL_ROUTE) {
+            TaskDetailScreen(
+                onEditTask = { taskId ->
+                    navActions.navigateToAddEditTask(R.string.edit_task, taskId)
+                },
+                onBackPressed = { navController.popBackStack() },
+                onDeleteTask = { navActions.navigateToTasks(DELETE_RESULT_OK) }
             )
         }
     }

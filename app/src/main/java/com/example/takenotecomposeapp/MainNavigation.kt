@@ -81,15 +81,11 @@ class TakeNoteNavigationActions(private val navController: NavHostController) {
         navController.navigate("$TASK_DETAIL_SCREEN/$taskId")
     }
 
-    fun navigateToAddEditTask(titleResId: Int, taskId: String?) {
-        val title = navController.context.getString(titleResId) // Get the actual title string
-        val route = "$ADD_EDIT_TASK_SCREEN/$title".let {
-            if (taskId != null) {
-                "$it?$TASK_ID_ARG=$taskId" // Append taskId if available
-            } else {
-                it
+    fun navigateToAddEditTask(title: Int, taskId: String?) {
+        navController.navigate(
+            "$ADD_EDIT_TASK_SCREEN/$title".let {
+                if (taskId != null) "$it?$TASK_ID_ARG=$taskId" else it
             }
-        }
-        navController.navigate(route)
+        )
     }
 }
