@@ -3,6 +3,7 @@ package com.example.takenotecomposeapp.ui.addedittask
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.takenotecomposeapp.R
 import com.example.takenotecomposeapp.TakeNoteDestinationsArgs
 import com.example.takenotecomposeapp.data.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,6 +60,34 @@ class AddEditTaskViewModel @Inject constructor(
     fun updateDescription(newDescription: String) {
         _uiState.update {
             it.copy(description = newDescription)
+        }
+    }
+
+    fun saveTask() {
+        if (uiState.value.title.isEmpty() || uiState.value.description.isEmpty()) {
+            _uiState.update {
+                it.copy(userMessage = R.string.empty_task_message)
+            }
+            return
+        }
+        if (taskId == null) {
+            createTask()
+        } else {
+            updateTask()
+        }
+    }
+
+    private fun updateTask() {
+        if (taskId == null) {
+            throw Exception()
+        }
+        viewModelScope.launch {
+            taskRepository.updateTask(
+                taskId, title = uiState.value.title, description = uiState.value.description
+            )
+            _uiState.update {
+                it.copy(isTaskSaved = true)
+            }
         }
     }
 }

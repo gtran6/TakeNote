@@ -100,4 +100,31 @@ class TaskRepositoryImpl @Inject constructor(
         localDataSource.deleteById(taskId)
         saveTasksToNetwork()
     }
+
+    override suspend fun updateTask(taskId: String, title: String, description: String) {
+        val task = getTask(taskId)?.copy(title = title, description = description) ?: throw Exception("Task (id $taskId) not found")
+        localDataSource.upsert(task.toLocal())
+        saveTasksToNetwork()
+    }
+
+    /**
+     * Get a Task with the given ID. Will return null if the task cannot be found.
+     *
+     * @param taskId - The ID of the task
+     * @param forceUpdate - true if the task should be updated from the network data source first.
+     */
+    override suspend fun getTask(taskId: String, forceUpdate: Boolean): Task? {
+        if (forceUpdate) {
+            refresh()
+        }
+        return localDataSource.getById(taskId)?.toExternal()
+    }
+
+    override suspend fun refresh() {
+        withContext(dispatcher) {
+            val remoteTask = networkDataSource.loadTasks()
+            localDataSource.deleteAll()
+            localDataSource.upsertAll(remoteTask.toLocal())
+        }
+    }
 }

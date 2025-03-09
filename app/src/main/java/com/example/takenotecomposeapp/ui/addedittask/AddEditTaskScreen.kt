@@ -48,7 +48,7 @@ fun AddEditTaskScreen(
         },
         floatingActionButton = {
             SmallFloatingActionButton(
-                onClick = viewModel::createTask
+                onClick = viewModel::saveTask
             ) {
                 Icon(Icons.Filled.Done, stringResource(id = R.string.cd_save_task))
             }
@@ -82,8 +82,8 @@ private fun AddEditTaskContent(
             .verticalScroll(rememberScrollState())
     ) {
         val textFieldColors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = Color.Transparent,
-            unfocusedTextColor = Color.Transparent,
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black,
             cursorColor = MaterialTheme.colorScheme.onSecondary
         )
         OutlinedTextField(
