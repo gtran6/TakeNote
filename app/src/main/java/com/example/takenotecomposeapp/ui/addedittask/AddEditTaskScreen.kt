@@ -25,7 +25,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,7 +39,9 @@ fun AddEditTaskScreen(
     modifier: Modifier = Modifier,
     viewModel: AddEditTaskViewModel = hiltViewModel(),
     @StringRes topBarTitle: Int,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    onTaskUpdate: () -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxWidth(),
@@ -63,6 +68,22 @@ fun AddEditTaskScreen(
             onDescriptionChanged = viewModel::updateDescription,
             modifier = Modifier.padding(paddingValues)
         )
+
+        // Check if the task is saved and call onTaskUpdate event
+        LaunchedEffect(uiState.isTaskSaved) {
+            if (uiState.isTaskSaved) {
+                onTaskUpdate()
+            }
+        }
+
+        // Check for user messages to display on the screen
+        uiState.userMessage?.let { userMessage ->
+            val snackbarText = stringResource(userMessage)
+            LaunchedEffect(snackbarHostState, viewModel, userMessage, snackbarText) {
+                snackbarHostState.showSnackbar(snackbarText)
+                viewModel.showSnackbarMessage()
+            }
+        }
 
     }
 }

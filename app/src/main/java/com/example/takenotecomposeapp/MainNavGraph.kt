@@ -62,7 +62,12 @@ fun MainNavGraph(
             val taskId = entry.arguments?.getString(TASK_ID_ARG)
             AddEditTaskScreen(
                 onBackPressed = { navController.popBackStack() },
-                topBarTitle = entry.arguments?.getInt(TITLE_ARG)!!
+                topBarTitle = entry.arguments?.getInt(TITLE_ARG)!!,
+                onTaskUpdate = {
+                    navActions.navigateToTasks(
+                        if (taskId == null) ADD_EDIT_RESULT_OK else EDIT_RESULT_OK
+                    )
+                }
             )
         }
 
