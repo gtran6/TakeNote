@@ -154,6 +154,10 @@ class TasksViewModel @Inject constructor(
     fun snackbarMessageShown() {
         _userMessage.value = null
     }
+
+    fun setFiltering(requestType: TasksFilterType) {
+        savedStateHandle[TASKS_FILTER_SAVED_STATE_KEY] = requestType
+    }
 }
 
 // Used to save the current filtering in SavedStateHandle.

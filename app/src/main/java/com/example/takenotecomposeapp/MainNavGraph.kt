@@ -18,6 +18,7 @@ import com.example.takenotecomposeapp.TakeNoteDestinationsArgs.USER_MESSAGE_ARG
 import com.example.takenotecomposeapp.ui.addedittask.AddEditTaskScreen
 import com.example.takenotecomposeapp.ui.taskdetail.TaskDetailScreen
 import com.example.takenotecomposeapp.ui.tasks.TasksScreen
+import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun MainNavGraph(
@@ -49,6 +50,7 @@ fun MainNavGraph(
                 onAddTask = { navActions.navigateToAddEditTask(R.string.add_task, null) },
                 onTaskClick = { task -> navActions.navigateToTaskDetail(task.id) },
                 onUserMessageDisplayed = { entry.arguments?.putInt(USER_MESSAGE_ARG, 0) },
+                openDrawer = {}
             )
         }
 

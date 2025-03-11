@@ -42,6 +42,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.takenotecomposeapp.MainTheme
 import com.example.takenotecomposeapp.R
 import com.example.takenotecomposeapp.data.Task
+import com.example.takenotecomposeapp.util.TakeNoteTopAppBars
 
 @Composable
 fun TasksScreen(
@@ -51,7 +52,8 @@ fun TasksScreen(
     viewModel: TasksViewModel = hiltViewModel(),
     onTaskClick: (Task) -> Unit,
     onUserMessageDisplayed: () -> Unit,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    openDrawer: () -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -59,6 +61,14 @@ fun TasksScreen(
             SmallFloatingActionButton(onClick = onAddTask) {
                 Icon(Icons.Filled.Add, stringResource(id = R.string.add_task))
             }
+        },
+        topBar = {
+            TakeNoteTopAppBars(
+                openDrawer = openDrawer,
+                onFilterAllTasks = { viewModel.setFiltering(TasksFilterType.ALL_TASKS) },
+                onFilterActiveTasks = { viewModel.setFiltering(TasksFilterType.ACTIVE_TASKS) },
+                onFilterCompletedTasks = { viewModel.setFiltering(TasksFilterType.COMPLETED_TASKS) },
+            )
         }
     ) { paddingValues ->
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
