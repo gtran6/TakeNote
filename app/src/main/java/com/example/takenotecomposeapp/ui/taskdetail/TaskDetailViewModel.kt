@@ -9,6 +9,7 @@ import com.example.takenotecomposeapp.data.Task
 import com.example.takenotecomposeapp.data.TaskRepository
 import com.example.takenotecomposeapp.ui.tasks.StopTimeoutMillis
 import com.example.takenotecomposeapp.util.Async
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -29,6 +30,10 @@ data class TaskDetailUiStates(
     val isTaskDeleted: Boolean = false
 )
 
+/**
+ * ViewModel for the Details screen.
+ */
+@HiltViewModel
 class TaskDetailViewModel @Inject constructor(
     private val taskRepository: TaskRepository,
     savedStateHandle: SavedStateHandle

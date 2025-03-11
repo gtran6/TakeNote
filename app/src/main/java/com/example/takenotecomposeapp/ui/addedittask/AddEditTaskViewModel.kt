@@ -44,6 +44,12 @@ class AddEditTaskViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(AddEditTaskUiState())
     val uiState: StateFlow<AddEditTaskUiState> = _uiState.asStateFlow()
 
+    init {
+        if (taskId != null) {
+            loadTask(taskId)
+        }
+    }
+
     private fun createTask() = viewModelScope.launch {
         taskRepository.createTask(uiState.value.title, uiState.value.description)
         _uiState.update {
@@ -94,6 +100,30 @@ class AddEditTaskViewModel @Inject constructor(
     fun showSnackbarMessage() {
         _uiState.update {
             it.copy(userMessage = null)
+        }
+    }
+
+    private fun loadTask(taskId: String) {
+        _uiState.update {
+            it.copy(isLoading = true)
+        }
+        viewModelScope.launch {
+            taskRepository.getTask(taskId).let { task ->
+                if (task != null) {
+                    _uiState.update {
+                        it.copy(
+                            title = task.title,
+                            description = task.description,
+                            isTaskCompleted = task.isCompleted,
+                            isLoading = false
+                        )
+                    }
+                } else {
+                    _uiState.update {
+                        it.copy(isLoading = false)
+                    }
+                }
+            }
         }
     }
 }

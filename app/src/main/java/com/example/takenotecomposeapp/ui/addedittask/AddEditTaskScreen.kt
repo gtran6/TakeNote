@@ -103,8 +103,8 @@ private fun AddEditTaskContent(
             .verticalScroll(rememberScrollState())
     ) {
         val textFieldColors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = Color.Black,
-            unfocusedTextColor = Color.Black,
+            focusedBorderColor = Color.Transparent,
+            unfocusedBorderColor = Color.Transparent,
             cursorColor = MaterialTheme.colorScheme.onSecondary
         )
         OutlinedTextField(
