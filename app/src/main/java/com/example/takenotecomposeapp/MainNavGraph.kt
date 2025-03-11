@@ -50,7 +50,8 @@ fun MainNavGraph(
                 onAddTask = { navActions.navigateToAddEditTask(R.string.add_task, null) },
                 onTaskClick = { task -> navActions.navigateToTaskDetail(task.id) },
                 onUserMessageDisplayed = { entry.arguments?.putInt(USER_MESSAGE_ARG, 0) },
-                openDrawer = {}
+                openDrawer = {},
+                onTaskClose = { navActions.navigateToTasks(DELETE_RESULT_OK) }
             )
         }
 

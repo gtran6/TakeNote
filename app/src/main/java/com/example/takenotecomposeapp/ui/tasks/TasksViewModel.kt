@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.takenotecomposeapp.ADD_EDIT_RESULT_OK
 import com.example.takenotecomposeapp.DELETE_RESULT_OK
 import com.example.takenotecomposeapp.EDIT_RESULT_OK
+import com.example.takenotecomposeapp.Hilt_TakeNoteActivity
 import com.example.takenotecomposeapp.R
+import com.example.takenotecomposeapp.TakeNoteDestinationsArgs
 import com.example.takenotecomposeapp.data.Task
 import com.example.takenotecomposeapp.data.TaskRepository
 import com.example.takenotecomposeapp.util.Async
@@ -29,7 +31,8 @@ data class TasksUiState(
     val items: List<Task> = emptyList(),
     val isLoading: Boolean = false,
     val filteringInfo: FilteringUiInfo = FilteringUiInfo(),
-    val userMessage: Int? = null
+    val userMessage: Int? = null,
+    val isTaskDeleted: Boolean = false
 )
 
 data class FilteringUiInfo(
@@ -52,6 +55,7 @@ class TasksViewModel @Inject constructor(
     private val _filterUiInfo = _savedFilterType.map { getFilterUiInfo(it) }.distinctUntilChanged()
     private val _isLoading = MutableStateFlow(false)
     private val _userMessage: MutableStateFlow<Int?> = MutableStateFlow(null)
+    private val _isTaskDeleted = MutableStateFlow(false)
     private val _filterTasksAsync = combine(taskRepository.getTasksStream(), _savedFilterType) { tasks, type ->
         filterTasks(tasks, type)
     }
@@ -59,21 +63,24 @@ class TasksViewModel @Inject constructor(
         .catch<Async<List<Task>>> { emit(Async.Error(R.string.loading_tasks_error)) }
 
     val uiState: StateFlow<TasksUiState> = combine(
-        _filterUiInfo, _isLoading, _userMessage, _filterTasksAsync
-    ) { filterUiInfo, isLoading, userMessage, tasksAsync ->
-        when (tasksAsync) {
+        _filterUiInfo, _isLoading, _userMessage, _filterTasksAsync, _isTaskDeleted
+    ) { filterUiInfo, isLoading, userMessage, filterTasksAsync, isTaskDeleted ->
+        when (filterTasksAsync) {
             Async.Loading -> {
                 TasksUiState(isLoading = true)
             }
             is Async.Error -> {
-                TasksUiState(userMessage = tasksAsync.errorMessage)
+                TasksUiState(
+                    userMessage = filterTasksAsync.errorMessage,
+                    isTaskDeleted = isTaskDeleted)
             }
             is Async.Success -> {
                 TasksUiState(
-                    items = tasksAsync.data,
+                    items = filterTasksAsync.data,
                     filteringInfo = filterUiInfo,
                     isLoading = isLoading,
-                    userMessage = userMessage
+                    userMessage = userMessage,
+                    isTaskDeleted = isTaskDeleted
                 )
             }
         }
@@ -157,6 +164,17 @@ class TasksViewModel @Inject constructor(
 
     fun setFiltering(requestType: TasksFilterType) {
         savedStateHandle[TASKS_FILTER_SAVED_STATE_KEY] = requestType
+    }
+
+    fun deleteTask(task: Task) = viewModelScope.launch {
+        taskRepository.deleteTask(task.id)
+    }
+
+    private fun handleTask(task: Task?): Async<Task?> {
+        if (task == null) {
+            return Async.Error(R.string.task_not_found)
+        }
+        return Async.Success(task)
     }
 }
 

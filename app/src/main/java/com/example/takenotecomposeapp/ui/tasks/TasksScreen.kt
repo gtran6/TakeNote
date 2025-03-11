@@ -16,7 +16,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
@@ -54,7 +56,8 @@ fun TasksScreen(
     onTaskClick: (Task) -> Unit,
     onUserMessageDisplayed: () -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    openDrawer: () -> Unit
+    openDrawer: () -> Unit,
+    onTaskClose: () -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -81,6 +84,7 @@ fun TasksScreen(
             currentFilteringLabel = uiState.filteringInfo.currentFilteringLabel,
             onTaskClick = onTaskClick,
             onTaskCheckedChange = viewModel::completeTask,
+            onTaskClose = viewModel::deleteTask,
             modifier = Modifier.padding(paddingValues)
         )
 
@@ -99,6 +103,12 @@ fun TasksScreen(
             if (userMessage != 0) {
                 viewModel.showEditResultMessage(userMessage)
                 currentOnUserMessageDisplayed()
+            }
+        }
+
+        LaunchedEffect(uiState.isTaskDeleted) {
+            if (uiState.isTaskDeleted) {
+                onTaskClose()
             }
         }
     }
@@ -142,6 +152,7 @@ private fun TasksContent(
     @StringRes currentFilteringLabel: Int,
     onTaskClick: (Task) -> Unit,
     onTaskCheckedChange: (Task, Boolean) -> Unit,
+    onTaskClose: (Task) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -157,12 +168,13 @@ private fun TasksContent(
             ),
             style = MaterialTheme.typography.headlineMedium
         )
-        LazyColumn {
+        LazyColumn(modifier = modifier) {
             items(tasks) { task ->
                 TaskItem(
                     task = task,
                     onTaskClick = onTaskClick,
-                    onCheckedChange = { onTaskCheckedChange(task, it) }
+                    onCheckedChange = { onTaskCheckedChange(task, it) },
+                    onClose = { onTaskClose(task) }
                 )
             }
         }
@@ -203,78 +215,8 @@ private fun TasksContentPreview() {
                 ),
                 currentFilteringLabel = R.string.all_tasks,
                 onTaskClick = {},
-                onTaskCheckedChange = { _, _ -> }
-            )
-        }
-    }
-}
-
-@Composable
-private fun TaskItem(
-    task: Task,
-    onCheckedChange: (Boolean) -> Unit,
-    onTaskClick: (Task) -> Unit
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = dimensionResource(id = R.dimen.vertical_margin),
-                vertical = dimensionResource(id = R.dimen.list_item_padding)
-            ).clickable { onTaskClick(task) }
-    ) {
-        Checkbox(
-            checked = task.isCompleted,
-            onCheckedChange = onCheckedChange
-        )
-        Text(
-            text = task.titleForList,
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(
-                start = dimensionResource(id = R.dimen.vertical_margin)
-            ),
-            textDecoration = if (task.isCompleted) {
-                TextDecoration.LineThrough
-            } else {
-                null
-            }
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun TaskItemPreview() {
-    MaterialTheme {
-        Surface {
-            TaskItem(
-                task = Task(
-                    title = "Title",
-                    description = "Description",
-                    id = "ID"
-                ),
-                onTaskClick = {},
-                onCheckedChange = {}
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun TaskItemCompletedPreview() {
-    MaterialTheme {
-        Surface {
-            TaskItem(
-                task = Task(
-                    title = "Title",
-                    description = "Description",
-                    isCompleted = true,
-                    id = "ID"
-                ),
-                onTaskClick = {},
-                onCheckedChange = {}
+                onTaskCheckedChange = { _, _ -> },
+                onTaskClose = {}
             )
         }
     }
