@@ -45,7 +45,9 @@ fun TaskItem(
         Text(
             text = task.titleForList,
             style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(
+            modifier = Modifier
+                .weight(1f) // push the X icon to the end of a row
+                .padding(
                 start = dimensionResource(id = R.dimen.vertical_margin)
             ),
             textDecoration = if (task.isCompleted) {
@@ -54,10 +56,8 @@ fun TaskItem(
                 null
             }
         )
-        Spacer(modifier = Modifier.weight(1f))
 
-        IconButton(
-            onClick = onClose) {
+        IconButton(onClick = onClose) {
             Icon(Icons.Filled.Close, contentDescription = "Close")
         }
     }
