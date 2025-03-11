@@ -168,7 +168,7 @@ private fun TasksContent(
             ),
             style = MaterialTheme.typography.headlineMedium
         )
-        LazyColumn(modifier = modifier) {
+        LazyColumn() {
             items(tasks) { task ->
                 TaskItem(
                     task = task,
